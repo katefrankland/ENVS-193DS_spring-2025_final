@@ -1,0 +1,68 @@
+---
+title: "final"
+format: html
+---
+initial set up 
+```{r}
+
+install.packages("tidyverse")
+install.packages("gt")
+install.packages("janitor")
+install.packages("here")
+install.packages("lubridate")
+install.packages("readxl")
+install.packages("MuMIn")
+install.packages("DHARMa")
+install.packages("fs")
+
+
+library(tidyverse)  
+
+library(gt)
+
+library(janitor)
+
+library(here) 
+
+library(lubridate) 
+
+library(readxl)  
+
+library(MuMIn) 
+
+library(DHARMa) 
+
+library(fs) 
+```
+
+Reading in Data 
+```{r}
+sst <- read.csv(here("data", "SST_update2023.csv")) # reading in data 
+
+```
+
+
+Problem 2 
+
+(a) Cleaning and summarizing data 
+```{r}
+sst_clean <- sst |> #beginning the sst dataframe
+  mutate (
+    date = ymd(date), # making date an object 
+    month = month(date, label = TRUE, abbr = TRUE) |> #creating a column for months
+              factor(levels = month.abb, ordered = TRUE), #ordered factor for months 
+    year = (year(date)) #creating a column for years 
+    ) |> 
+      
+    filter(year >= 2018, year <= 2023) |> #filtering years to include 2018 - 2023 
+    mutate(
+      year = factor(year) #convert to factor 
+    ) |> 
+    group_by(year, month) |> # group data by the year and the month 
+    summarize(mean_monthly_sst = mean(temp, na.rm = TRUE)) |> #summarize the mean monthly sst 
+    ungroup() #remove grouping 
+
+
+```
+
+
