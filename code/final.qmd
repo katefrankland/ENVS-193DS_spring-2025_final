@@ -62,6 +62,12 @@ sst_clean <- sst |> #beginning the sst dataframe
     summarize(mean_monthly_sst = mean(temp, na.rm = TRUE)) |> #summarize the mean monthly sst 
     ungroup() #remove grouping 
 
+slice_sample(sst_clean, n = 5) # show 5 random rows 
+
+str(sst_clean) # show structure of the data 
+
+
+
 
 ```
 
