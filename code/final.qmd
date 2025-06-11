@@ -75,7 +75,7 @@ str(sst_clean) # show structure of the data
 
 
 (b) Visualize the Data 
-```{r, fig.height = 5, fig.width = 10 }
+```{r, fig.height = 5, fig.width = 10 } 
 
 ggplot(data = sst_clean, #creating visualization, using sst_clean data frame
        aes(x = month, # month is the x axis 
@@ -94,6 +94,23 @@ ggplot(data = sst_clean, #creating visualization, using sst_clean data frame
     "2022" = "blue3",
     "2023" = "blue4"  
   )) + 
+  
+  labs(x = "Month", # editing x-axis label title
+     y = "Mean monthly sea surface temperature (°C)", # editing y axis label title
+     color = "Year" # legend title 
+     ) + 
+
+theme_minimal(base_size = 12) + #apply minimal theme, font size 12 
+theme(
+  panel.background = element_rect(fill = "white", color = NA), # create a white background 
+  panel.grid.major = element_blank(), # remove grid line colors
+  panel.grid.minor = element_blank(), # remove grid line colors 
+  panel.border = element_rect(color = "gray", fill = NA, linewidth = 1), # add a border color 
+  legend.position = c(0.05, 0.95), # positioning the legend 
+  legend.justification = c(0,1), # positioning legend
+  legend.background = element_rect(fill = "white", color = "gray"), # background and border colors for the legend
+  axis.line = element_blank() # remove axis lines
+)
 ```
 
 
