@@ -201,8 +201,33 @@ model_table
 ```
 
 
-
 (e) Run the models 
+```{r model-fitting}
+# Model 0 : Null model 
+model0 <- glm(sp ~ 1, # formula 
+              data = nest_boxes_clean, # data  
+              family = "binomial") # distribution 
+
+# Model 1: Saturated model with interaction 
+model1 <- glm(sp ~ edge_distance + season, # formula
+              data = nest_boxes_clean, # data
+              family = "binomial") # distribution
+
+
+# Model 2: Season Only 
+model2 <- glm(sp ~ season, # formula
+              data = nest_boxes_clean, # data
+              family = "binomial") # distribution
+
+
+#Model 3: Distance Only
+model3 <- glm(sp ~ edge_distance, # formula 
+              data = nest_boxes_clean, # data 
+              family = "binomial") # distribution 
+
+```
+
+
 
 (f) Check diagnostics
 
@@ -216,12 +241,3 @@ model_table
 
 (k) interpret your results
 
-
-
-```{r, visualizing data, echo=FALSE, message=FALSE, warning=FALSE, results:'hide', fig.show='hide'}
-nest_boxes_clean |> 
-  group_by()
-
-
-
-```
