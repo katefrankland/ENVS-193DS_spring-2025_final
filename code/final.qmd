@@ -7,6 +7,7 @@ format: html
 ---
 initial set up 
 ```{r}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 install.packages("tidyverse")
 install.packages("gt")
@@ -30,6 +31,8 @@ library(dplyr)
 
 library(here) 
 
+library(knitr)
+
 library(lubridate) 
 
 library(readxl)  
@@ -44,9 +47,9 @@ library(fs)
 
 Reading in Data 
 ```{r}
-sst <- read.csv(here("data", "SST_update2023.csv")) # reading in data 
+sst <- read.csv(here::here("data", "SST_update2023.csv")) # reading in data 
 
-nest_boxes <- read.csv(here("data", "occdist.csv"))
+nest_boxes <- read.csv(here::here("data", "occdist.csv"))
 
 ```
 
@@ -123,30 +126,102 @@ Problem 3
 ```{r, cleaning data, echo=FALSE, message=FALSE, results='hide'}
 nest_boxes_clean <- nest_boxes |> #cleaning the dataframe 
   clean_names() |> #clean names 
-  rename( 
-    swift_parrot = sp, # rename "sp"
-    common_starling = cs, # rename "cs"
-    unoccupied = e, # rename "e" 
-    tree_martin = tm # rename "tm"
-    ) |> 
   mutate( # modifying variables 
-    box_occupant = as_factor(box_occupant), # convert box_occupant to a factor 
+    box_occupant = as_factor(box_occupant),# convert box_occupant to a factor 
+    box_occupant = fct_relevel(box_occupant, # ordering the box_occupant factors 
+                               "swift parrot",
+                               "common starling",
+                               "tree martin",
+                               "empty"),
     season = factor(season, levels = c("2016", "2019")), # convert season to an ordered factor 
     edge_distance = as.numeric(edge_distance) # edge_distance as a numeric variable 
-  )
+  ) |> 
   
+  select(  # selecting the columns we want 
+    box_occupant, # box occupant 
+    edge_distance, # box distance 
+    season, # season/year of observation 
+    sp, cs, e, tm) # species indicators or unoccupied 
+  
+nest_boxes_clean |> slice_sample(n=5) # selection of 5 random rows 
+str(nest_boxes_clean) # displaying strucutre of cleaned dataset 
 ```
 
-```{r, visualizing data, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
-ggplot(data = nest_boxes_clean,
-       aes(x = season, 
-           y = edge_distance)) + 
+```{r, visualizing data, echo=FALSE, message=FALSE, warning=FALSE, output=FALSE, results='hide', fig.show='hide'}
+
+ggplot(data = nest_boxes_clean, # using the nest_boxes_clean data 
+       aes(x = season, # x axis is the 
+           y = edge_distance,
+           color = season)) + 
   
   geom_jitter(width = 0.1, 
               height = 0, 
               shape = 21,
-              alpha = 0.6)
+              alpha = 0.6,
+              fill = "white")+
+  
+  stat_summary(geom = "point",
+               fun = mean,
+               size = 2,
+               color = "black")
+
+```
+
+(a) Response Variable
+
+(b) Purpose of Study
+
+(c) Difference in "Seasons"
+
+(d) Table of Models
+```{r model-table, echo=TRUE}
+
+model_table <- data.frame(
+  Model = 0:3,
+  Season = c("", "X", "X", ""),
+  Edge_Distance = c("", "X", "", "X"),
+  Predictor_list= c(
+    "No predictors (null model)",
+    "All predictors (full model)",
+    "Season only",
+    "Distance to Forest Edge Only"
+),
+
+stringsAsFactors = FALSE
+
+)
+
+kable(model_table, 
+      col.names = c("Model Number", "Season", "Distance to Forest Edge", "Predictor List"),
+      caption = "Table 1. Summary of Models.",
+      align = c("c","c","c","l")
+)
+
+model_table
 ```
 
 
-```{r, visualizing data }
+
+(e) Run the models 
+
+(f) Check diagnostics
+
+(g) Select best model 
+
+(h) visualize model predictions
+
+(i) figure caption
+
+(j) Calculate model predictions
+
+(k) interpret your results
+
+
+
+```{r, visualizing data, echo=FALSE, message=FALSE, warning=FALSE, results:'hide', fig.show='hide'}
+nest_boxes_clean |> 
+  group_by()
+
+
+
+```
