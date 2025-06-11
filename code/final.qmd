@@ -11,6 +11,7 @@ initial set up
 install.packages("tidyverse")
 install.packages("gt")
 install.packages("janitor")
+install.packages("dplyr")
 install.packages("here")
 install.packages("lubridate")
 install.packages("readxl")
@@ -24,6 +25,8 @@ library(tidyverse)
 library(gt)
 
 library(janitor)
+
+library(dplyr)
 
 library(here) 
 
@@ -42,6 +45,8 @@ library(fs)
 Reading in Data 
 ```{r}
 sst <- read.csv(here("data", "SST_update2023.csv")) # reading in data 
+
+nest_boxes <- read.csv(here("data", "occdist.csv"))
 
 ```
 
@@ -113,8 +118,35 @@ theme(
 )
 ```
 
+Problem 3
+
+```{r, cleaning data, echo=FALSE, message=FALSE, results='hide'}
+nest_boxes_clean <- nest_boxes |> #cleaning the dataframe 
+  clean_names() |> #clean names 
+  rename( 
+    swift_parrot = sp, # rename "sp"
+    common_starling = cs, # rename "cs"
+    unoccupied = e, # rename "e" 
+    tree_martin = tm # rename "tm"
+    ) |> 
+  mutate( # modifying variables 
+    box_occupant = as_factor(box_occupant), # convert box_occupant to a factor 
+    season = factor(season, levels = c("2016", "2019")), # convert season to an ordered factor 
+    edge_distance = as.numeric(edge_distance) # edge_distance as a numeric variable 
+  )
+  
+```
+
+```{r, visualizing data, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+ggplot(data = nest_boxes_clean,
+       aes(x = season, 
+           y = edge_distance)) + 
+  
+  geom_jitter(width = 0.1, 
+              height = 0, 
+              shape = 21,
+              alpha = 0.6)
+```
 
 
-
-
-
+```{r, visualizing data }
