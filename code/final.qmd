@@ -7,7 +7,10 @@ format:
     toc: true
 ---
 **Name:** Kate Frankland 
+
 **Date:** June 11, 2025
+
+
 **Github link:** https://github.com/katefrankland/ENVS-193DS_spring-2025_final.git
 
 ```{r initial set up, include=TRUE, message=FALSE, warning=FALSE}
