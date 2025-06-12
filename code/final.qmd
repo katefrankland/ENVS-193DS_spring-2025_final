@@ -3,7 +3,7 @@ title: "ENVS 193DS Final"
 author: "Kate Frankland" 
 date: "2025-06-11"
 format:
-  html:
+  html: 
     toc: true
 ---
 **Name:** Kate Frankland 
@@ -176,25 +176,25 @@ ggplot(data = nest_boxes_clean, # using the nest_boxes_clean data
 ## (d) Table of Models
 ```{r model-table, echo=TRUE}
 
-model_table <- data.frame(
-  Model = 0:3,
-  Season = c("", "X", "X", ""),
-  Edge_Distance = c("", "X", "", "X"),
-  Predictor_list= c(
-    "No predictors (null model)",
-    "All predictors (full model)",
-    "Season only",
-    "Distance to Forest Edge Only"
+model_table <- data.frame( # create a new data frame 
+  Model = 0:3, # use model numbers 0 to 3 
+  Season = c("", "X", "X", ""), # create a column showing if season is included 
+  Edge_Distance = c("", "X", "", "X"), # create a column showing if edge_distance is included 
+  Predictor_list= c( # create a column showing predictors 
+    "No predictors (null model)", # model 0 
+    "All predictors (full model)", # model 1 
+    "Season only", # model 2 
+    "Distance to Forest Edge Only" # model 3 
 ),
 
-stringsAsFactors = FALSE
+stringsAsFactors = FALSE # prevent string to factor conversion 
 
 )
 
-kable(model_table, 
-      col.names = c("Model Number", "Season", "Distance to Forest Edge", "Predictor List"),
-      caption = "Table 1. Summary of Models.",
-      align = c("c","c","c","l")
+kable(model_table, # create a table 
+      col.names = c("Model Number", "Season", "Distance to Forest Edge", "Predictor List"), # column headers 
+      caption = "Table 1. Summary of Models.", # add caption to table 
+      align = c("c","c","c","l") # align columns 
 )
 
 ```
