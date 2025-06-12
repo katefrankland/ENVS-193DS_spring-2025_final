@@ -231,7 +231,43 @@ model3 <- glm(sp ~ edge_distance, # formula
 
 (f) Check diagnostics
 
+```{r diagnostics, message=FALSE}
+
+# diagnostics for model 0 
+plot(
+  simulateResiduals(model0))
+
+# diagnostics for model 1 
+plot(
+  simulateResiduals(model1))
+
+
+# diagnostics for model 2 
+plot(
+  simulateResiduals(model2))
+
+# diagnostics for model 3
+plot(
+  simulateResiduals(model3))
+
+
+```
+
+
 (g) Select best model 
+
+```{r model-selection}
+
+AICc(
+  model0,
+  model1,
+  model2,
+  model3
+  ) |> 
+  arrange(AICc)
+
+```
+
 
 (h) visualize model predictions
 
