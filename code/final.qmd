@@ -2,14 +2,9 @@
 title: "ENVS 193DS Final"
 author: "Kate Frankland" 
 date: "2025-06-11"
-format: 
+format:
   html:
     toc: true
-    toc-location: left
-    number-sections: true
-    smooth-scroll: true
-    table-scroll: true
-    embed-resources: true
 ---
 **Name:** Kate Frankland 
 **Date:** June 11, 2025
@@ -37,9 +32,9 @@ nest_boxes <- read.csv(here::here("data", "occdist.csv"))
 
 ```
 
-# Problem 1: 
+# Problem 1, Research Writing
 
- ## (a) 
+## (a) 
 - In part 1, it can be assumed that a Pearson's correlation test was used, considering that it explicitly mentions a "correlation between distance from headwater and annual total nitrogen load". In part 2, a one-way ANOVA test was used. In this test, a comparison was made between the mean amount of nitrogen loads depending on which source was being used (urban land, atmospheric deposition, fertilizer, wastewater treatment, or grasslands)
 
 ## (b)
