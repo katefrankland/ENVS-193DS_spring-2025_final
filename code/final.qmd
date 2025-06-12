@@ -337,8 +337,8 @@ ggplot() + # begin visualization, plot data and model predictions
 
   labs( # add labels 
     x = "Distance from the Forest Edge (meters)", # label x axis 
-    y = "Probability of Box Occupancy", # label y axis 
-    title = "Swift Parrot", # add a title 
+    y = "Probability of Swift Parrot Box Occupancy", # label y axis 
+    title = "Model Predictions of Swift Parrot  Occupancy", # add a title 
     color = "Season", # legend title for line color 
     fill = "Season" # legend title for fill 
   ) +
@@ -355,5 +355,34 @@ ggplot() + # begin visualization, plot data and model predictions
 
 (j) Calculate model predictions
 
-(k) interpret your results
+```{r model-prediction, message=FALSE, warning=FALSE}
 
+new_predictions <- expand.grid( # new data frame for predictions and the distances of 0 m and 900 m 
+  edge_distance = c(0, 900), # define distances 
+  season = factor(c("2016", "2019"), 
+                  levels = levels(nest_boxes_clean$season)) # factors should match original model 
+)
+
+
+pred <- predict(model1, 
+                newdata = new_predictions, 
+                type = "link", # predicted values for logit, 
+                se.fit = TRUE) # include standard errors 
+
+new_predictions <- new_predictions |> # Add predicted probabilities
+  mutate(
+    fit = pred$fit,   # logit prediction
+    se_fit = pred$se.fit,   # standard error of fit
+    predicted_prob = plogis(fit),                         # convert to probability
+    lower = plogis(fit - 1.96 * se_fit),  # lower 95% CI
+    upper = plogis(fit + 1.96 * se_fit)   # upper 95% CI
+  )
+
+new_predictions # show results 
+
+```
+
+
+
+
+(k) interpret your results
