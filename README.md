@@ -15,7 +15,8 @@ Code:
 
 
 Data: 
-Problem 1 Citation: Saleh, D., & Joseph D. (2021). Concentrations, Loads, and Associated Trends of Nutrients Entering the Sacramento–San Joaquin Delta, California. San Francisco Estuary and Watershed Science. 10.15447/sfews.2021v19iss4art6. 
+
+- Problem 1 Citation: Saleh, D., & Joseph D. (2021). Concentrations, Loads, and Associated Trends of Nutrients Entering the Sacramento–San Joaquin Delta, California. San Francisco Estuary and Watershed Science. 10.15447/sfews.2021v19iss4art6. 
 
 - Problem 2: This problem uses the SST_update2023.csv data showing Sea Surface Temperature Data from the SBC LTER. 
 Citation: Kui, L. (2024). Daily sea surface temperature in Santa Barbara channel between 1982 and 2023 ver 3 [Dataset]. Environmental Data Initiative, https://doi.org/10.6073/pasta/e930954949b2635928b8be6824630f84.
