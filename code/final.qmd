@@ -17,7 +17,16 @@ format:
 ```{r initial set up, include=TRUE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
-
+install.packages("tidyverse")
+install.packages("gt")
+install.packages("janitor")
+install.packages("dplyr")
+install.packages("here")
+install.packages("lubridate")
+install.packages("readxl")
+install.packages("MuMIn")
+install.packages("DHARMa")
+install.packages("fs")
 
 
 library(tidyverse)  
@@ -41,21 +50,21 @@ nest_boxes <- read.csv(here::here("data", "occdist.csv"))
 
 # Problem 1: 
 
-## (a) 
+**(a)** 
 - In part 1, it can be assumed that a Pearson's correlation test was used, considering that it explicitly mentions a "correlation between distance from headwater and annual total nitrogen load". In part 2, a one-way ANOVA test was used. In this test, a comparison was made between the mean amount of nitrogen loads depending on which source was being used (urban land, atmospheric deposition, fertilizer, wastewater treatment, or grasslands)
 
-## (b) 
+**(b)**
 - An additional test that could be used is Tukey's Honestly Significant Difference Test (HSD). A test like this would provide more information regarding source categories and nitrogen load, allowing specific groups to be identified that noticeably differ. Information about effect size could also be included, as it could help dissect differences and determine how meaningful they are, helping provide confidence in the analysis. 
 
 
-## (c)
+**(c)**
 (1) A statistically significant positive relationship between distance from the headwater and total nitrogen load can be identified, suggesting that nitrogen load will increase as water travels downstream. (Pearson’s r = correlation coefficient, p = 0.03, α = significance level).
 
 (2) We found a statistically significant difference in average nitrogen load between the five sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands), indicating that some sources will have a higher nitrogen content than others. Additional tests, including the Tukey's HSD test, could help clarify this further. (one-way ANOVA, F = test statistic, df = degrees of freedom, p = 0.02, α = significance level). 
 
 # Problem 2, Data Visualization 
 
-## (a) Cleaning and Summarizing Data 
+**(a)** Cleaning and Summarizing Data 
 ```{r cleaning and summarizing, message=FALSE}
 sst_clean <- sst |> # beginning the sst dataframe
   mutate (
@@ -81,7 +90,7 @@ str(sst_clean) # show structure of the data
 ```
 
 
-## (b) Visualize the Data 
+**(b)** Visualize the Data 
 ```{r, visualization} 
 
 ggplot(data = sst_clean, #creating visualization, using sst_clean data frame
@@ -166,16 +175,16 @@ ggplot(data = nest_boxes_clean, # using the nest_boxes_clean data
 
 ```
 
-## (a) Response Variable
+**(a)** Response Variable
 - We are using binary data here; a zero represents that the box is unoccupied, and a one represents that one of the observed species (Swift Parrot (sp), Common Starling (cs), Tree Martin (tm), or if an empty box (e)) is present.  
 
-## (b) Purpose of Study
+**(b)** Purpose of Study
 - The primary interest of this study is the Swift Parrot, considering their endangered status. The Common Starling is an introduced species, and the Tree Martin is a native competitor;  both of these species  may occupy the same nesting boxes intended for the Swift Parrot, which can impact the conservation efforts and success for Swift Parrots to breed.
 
-## c) Difference in "Seasons"
+**(c)** Difference in "Seasons"
 - The years of 2016 and 2019 are being compared, and observations were taken during the winter months to observe nesting patterns. In 2016, the boxes were newly installed, and by 2019, they had been in place for a few years. A second breeding season also occurred in 2019, resulting in a shift in nest box occupancy.
 
-## (d) Table of Models
+**(d)** Table of Models
 ```{r model-table, echo=TRUE}
 
 model_table <- data.frame(
@@ -199,11 +208,10 @@ kable(model_table,
       align = c("c","c","c","l")
 )
 
-model_table
 ```
 
 
-## (e) Run the models 
+**(e)** Run the models 
 ```{r model-fitting}
 # Model 0 : Null model 
 model0 <- glm(sp ~ 1, # formula 
@@ -229,9 +237,7 @@ model3 <- glm(sp ~ edge_distance, # formula
 
 ```
 
-
-
-## (f) Check diagnostics
+**(f)** Check Diagnostics
 
 ```{r diagnostics, message=FALSE, warning=FALSE}
 
@@ -255,8 +261,7 @@ plot(
 
 ```
 
-
-## (g) Select best model 
+**(g)** Select Best Model 
 
 ```{r model-selection}
 
@@ -270,7 +275,7 @@ AICc( #AICc to check different AICc values for each model
 
 ```
 
-## (h) Visualize the Model Predictions
+**(h)** Visualize the Model Predictions
 
 ```{r visualizing-models, message=FALSE, warning=FALSE}
 
@@ -351,9 +356,14 @@ ggplot() + # begin visualization, plot data and model predictions
 ```
 
 
-## (i) figure caption
+**(i)** Figure Caption
 
-## (j) Calculate model predictions
+Figure 1. Swift Parrot Nest Box Occupancy Predicted Probability by Distance from the Forest Edge in 2016 and 2019. 
+
+The data for this figure is taken from the following: Stojanovic et al. (2021), Do nest boxes breed the target species or its competitors? A  case study of a critically endangered bird https://doi.org/10.5061/dryad.83bk3j9sb. This figure displays the modeled probability of the Swift Parrot's occupancy in nest boxes, based on their distance from the forest edge, during the breeding seasons of 2016 (blue) and 2019 (pink). The lines indicate the model estimates, shaded areas represent the 95% confidence intervals, and jitter points indicate the presence (1) or absence (0) of Swift Parrots in individual nest boxes. In both years, there is a decline in probability as distance increases. It can also be identified that probabilities are higher when boxes are closer to the forest edge in the year of 2016. 
+
+
+**(j)** Calculate Model Predictions
 
 ```{r model-prediction, message=FALSE, warning=FALSE}
 
@@ -383,5 +393,4 @@ new_predictions # show results
 ```
 
 
-
-## (k) interpret your results
+**(k)** interpret your results
