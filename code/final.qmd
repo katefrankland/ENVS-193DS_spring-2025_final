@@ -231,7 +231,7 @@ model3 <- glm(sp ~ edge_distance, # formula
 
 (f) Check diagnostics
 
-```{r diagnostics, message=FALSE}
+```{r diagnostics, message=FALSE, warning=FALSE}
 
 # diagnostics for model 0 
 plot(
@@ -258,18 +258,98 @@ plot(
 
 ```{r model-selection}
 
-AICc(
+AICc( #AICc to check different AICc values for each model
   model0,
   model1,
   model2,
   model3
   ) |> 
-  arrange(AICc)
+  arrange(AICc) #arranging output so that the lowest AICc is first 
+
+```
+- model 1 is the best model 
+
+
+(h) Visualize the Model Predictions
+
+```{r visualizing-models, message=FALSE, warning=FALSE}
+
+    min_edge <-  min(nest_boxes_clean$edge_distance, na.rm = TRUE) # minimum edge_distance
+    max_edge <-  max(nest_boxes_clean$edge_distance, na.rm = TRUE) # maximum edge_distance
+    
+    edge_seq <- seq(min_edge, max_edge, length.out = 100) # create a sequence for the edge_distances
+    
+    seasons <- levels(nest_boxes_clean$season) # make levels for seasons a factor 
+    
+    new_data <- expand.grid( # making new data frame, expanding grid 
+      edge_distance = edge_seq,
+      season = seasons
+    )
+    
+    pred <- predict(model1, newdata = new_data, type = "link", se.fit = TRUE) # find model predictions 
+    
+    new_data <- new_data |> # add predictions and 95% confidence intervals 
+      mutate(
+        fit = pred$fit, # predicted logit values 
+        se_fit = pred$se.fit, # standard errors for predictions 
+        lower = plogis(fit - 1.96 * se_fit), # lower 95% confidence interval bound
+        upper = plogis(fit + 1.96 * se_fit), # upper 95% confidence interval bound
+        predicted_prob = plogis(fit) # predicted probability 
+      )
+    
+ggplot() + # begin visualization, plot data and model predictions 
+  geom_jitter( # add raw data points 
+    data = nest_boxes_clean,
+    aes(
+      x = edge_distance, # make x axis the distance from the forest edge 
+      y = sp, # make y axis reprsent swift parrot presence
+      color = season), # color points by season 
+    width = 0, # no jitter horizontally 
+    height = 0.05, # smal jitter vertically 
+    alpha = 0.3, # add some transparency 
+    size = 2 # add size for points 
+  ) +
+  
+  # Add 95% Confidence Interval Ribbon
+  geom_ribbon( 
+    data = new_data,
+    aes(x = edge_distance, 
+        ymin = lower, # lower confidence bound 
+        ymax = upper, # upper confidence bound 
+        fill = season), # fill by season 
+    alpha = 0.3, # add transparency 
+    color = NA # remove ribbon border color 
+  ) +
+  
+  # Add Prediction Lines
+  geom_line(
+    data = new_data,
+    aes(
+      x = edge_distance,
+      y = predicted_prob, # predicted probability
+      color = season), # color lines by season 
+    size = 1.5 # add thickness to the lines 
+  ) +
+  
+  # Add New Colors 
+  scale_color_manual(values = c("2016" = "steelblue", "2019" = "magenta")) +
+  scale_fill_manual(values = c("2016" = "steelblue", "2019" = "magenta")) +
+
+  labs( # add labels 
+    x = "Distance from the Forest Edge (meters)", # label x axis 
+    y = "Probability of Box Occupancy", # label y axis 
+    title = "Swift Parrot", # add a title 
+    color = "Season", # legend title for line color 
+    fill = "Season" # legend title for fill 
+  ) +
+
+  theme(panel.background = element_blank(), # remove background 
+        axis.line = element_blank(), # remove grid lines 
+        axis.ticks = element_blank() # remove ticks 
+  )
 
 ```
 
-
-(h) visualize model predictions
 
 (i) figure caption
 
