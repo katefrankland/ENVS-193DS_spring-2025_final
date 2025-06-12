@@ -1,12 +1,20 @@
 ---
-title: "final"
-format: html
-
-#knitr::opts_chunk$set(fig.width = 10, fig.height = 5)
-
+title: "ENVS 193DS Final"
+author: "Kate Frankland" 
+date: "2025-06-11"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    number-sections: true
+    smooth-scroll: true
+    table-scroll: true
+    embed-resources: true
 ---
-initial set up 
-```{r}
+**Name:** Kate Frankland 
+**Date:** June 11, 2025
+
+```{r initial set up, include=TRUE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 install.packages("tidyverse")
@@ -22,57 +30,57 @@ install.packages("fs")
 
 
 library(tidyverse)  
-
 library(gt)
-
 library(janitor)
-
 library(dplyr)
-
 library(here) 
-
 library(knitr)
-
 library(lubridate) 
-
 library(readxl)  
-
 library(MuMIn) 
-
 library(DHARMa) 
-
 library(fs) 
-```
 
-
-Reading in Data 
-```{r}
+#Read in data
 sst <- read.csv(here::here("data", "SST_update2023.csv")) # reading in data 
 
 nest_boxes <- read.csv(here::here("data", "occdist.csv"))
 
 ```
 
+# Problem 1: 
 
-Problem 2 
+## (a) 
+- In part 1, it can be assumed that a Pearson's correlation test was used, considering that it explicitly mentions a "correlation between distance from headwater and annual total nitrogen load". In part 2, a one-way ANOVA test was used. In this test, a comparison was made between the mean amount of nitrogen loads depending on which source was being used (urban land, atmospheric deposition, fertilizer, wastewater treatment, or grasslands)
 
-(a) Cleaning and Summarizing Data 
-```{r}
-sst_clean <- sst |> #beginning the sst dataframe
+## (b) 
+- An additional test that could be used is Tukey's Honestly Significant Difference Test (HSD). A test like this would provide more information regarding source categories and nitrogen load, allowing specific groups to be identified that noticeably differ. Information about effect size could also be included, as it could help dissect differences and determine how meaningful they are, helping provide confidence in the analysis. 
+
+
+## (c)
+(1) A statistically significant positive relationship between distance from the headwater and total nitrogen load can be identified, suggesting that nitrogen load will increase as water travels downstream. (Pearson’s r = correlation coefficient, p = 0.03, α = significance level).
+
+(2) We found a statistically significant difference in average nitrogen load between the five sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands), indicating that some sources will have a higher nitrogen content than others. Additional tests, including the Tukey's HSD test, could help clarify this further. (one-way ANOVA, F = test statistic, df = degrees of freedom, p = 0.02, α = significance level). 
+
+# Problem 2, Data Visualization 
+
+## (a) Cleaning and Summarizing Data 
+```{r cleaning and summarizing, message=FALSE}
+sst_clean <- sst |> # beginning the sst dataframe
   mutate (
     date = ymd(date), # making date an object 
-    month = month(date, label = TRUE, abbr = TRUE) |> #creating a column for months
-              factor(levels = month.abb, ordered = TRUE), #ordered factor for months 
-    year = (year(date)) #creating a column for years 
+    month = month(date, label = TRUE, abbr = TRUE) |> # creating a column for months
+              factor(levels = month.abb, ordered = TRUE), # ordered factor for months 
+    year = (year(date)) # creating a column for years 
     ) |> 
       
-    filter(year >= 2018, year <= 2023) |> #filtering years to include 2018 - 2023 
+    filter(year >= 2018, year <= 2023) |> # filtering years to include 2018 - 2023 
     mutate(
-      year = factor(year) #convert to factor 
+      year = factor(year) # convert to factor 
     ) |> 
     group_by(year, month) |> # group data by the year and the month 
-    summarize(mean_monthly_sst = mean(temp, na.rm = TRUE)) |> #summarize the mean monthly sst 
-    ungroup() #remove grouping 
+    summarize(mean_monthly_sst = mean(temp, na.rm = TRUE)) |> # summarize the mean monthly sst 
+    ungroup() # remove grouping 
 
 slice_sample(sst_clean, n = 5) # show 5 random rows 
 
@@ -82,8 +90,8 @@ str(sst_clean) # show structure of the data
 ```
 
 
-(b) Visualize the Data 
-```{r, fig.height = 5, fig.width = 10 } 
+## (b) Visualize the Data 
+```{r, visualization, fig.height = 5, fig.width = 10 } 
 
 ggplot(data = sst_clean, #creating visualization, using sst_clean data frame
        aes(x = month, # month is the x axis 
@@ -121,7 +129,7 @@ theme(
 )
 ```
 
-Problem 3
+# Problem 3, Data Analysis 
 
 ```{r, cleaning data, echo=FALSE, message=FALSE, results='hide'}
 nest_boxes_clean <- nest_boxes |> #cleaning the dataframe 
@@ -167,13 +175,16 @@ ggplot(data = nest_boxes_clean, # using the nest_boxes_clean data
 
 ```
 
-(a) Response Variable
+## (a) Response Variable
+- We are using binary data here; a zero represents that the box is unoccupied, and a one represents that one of the observed species (Swift Parrot (sp), Common Starling (cs), Tree Martin (tm), or if an empty box (e)) is present.  
 
-(b) Purpose of Study
+## (b) Purpose of Study
+- The primary interest of this study is the Swift Parrot, considering their endangered status. The Common Starling is an introduced species, and the Tree Martin is a native competitor;  both of these species  may occupy the same nesting boxes intended for the Swift Parrot, which can impact the conservation efforts and success for Swift Parrots to breed.
 
-(c) Difference in "Seasons"
+## c) Difference in "Seasons"
+- The years of 2016 and 2019 are being compared, and observations were taken during the winter months to observe nesting patterns. In 2016, the boxes were newly installed, and by 2019, they had been in place for a few years. A second breeding season also occurred in 2019, resulting in a shift in nest box occupancy.
 
-(d) Table of Models
+## (d) Table of Models
 ```{r model-table, echo=TRUE}
 
 model_table <- data.frame(
@@ -201,7 +212,7 @@ model_table
 ```
 
 
-(e) Run the models 
+## (e) Run the models 
 ```{r model-fitting}
 # Model 0 : Null model 
 model0 <- glm(sp ~ 1, # formula 
@@ -229,7 +240,7 @@ model3 <- glm(sp ~ edge_distance, # formula
 
 
 
-(f) Check diagnostics
+## (f) Check diagnostics
 
 ```{r diagnostics, message=FALSE, warning=FALSE}
 
@@ -254,23 +265,21 @@ plot(
 ```
 
 
-(g) Select best model 
+## (g) Select best model 
 
 ```{r model-selection}
 
 AICc( #AICc to check different AICc values for each model
   model0,
-  model1,
+  model1, # model 1 will be the best model 
   model2,
   model3
   ) |> 
   arrange(AICc) #arranging output so that the lowest AICc is first 
 
 ```
-- model 1 is the best model 
 
-
-(h) Visualize the Model Predictions
+## (h) Visualize the Model Predictions
 
 ```{r visualizing-models, message=FALSE, warning=FALSE}
 
@@ -351,9 +360,9 @@ ggplot() + # begin visualization, plot data and model predictions
 ```
 
 
-(i) figure caption
+## (i) figure caption
 
-(j) Calculate model predictions
+## (j) Calculate model predictions
 
 ```{r model-prediction, message=FALSE, warning=FALSE}
 
@@ -384,5 +393,4 @@ new_predictions # show results
 
 
 
-
-(k) interpret your results
+## (k) interpret your results
