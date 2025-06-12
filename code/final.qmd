@@ -13,6 +13,7 @@ format:
 ---
 **Name:** Kate Frankland 
 **Date:** June 11, 2025
+**Github link:** https://github.com/katefrankland/ENVS-193DS_spring-2025_final.git
 
 ```{r initial set up, include=TRUE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -171,7 +172,7 @@ ggplot(data = nest_boxes_clean, # using the nest_boxes_clean data
 ## (b) Purpose of Study
 - The primary interest of this study is the Swift Parrot, considering their endangered status. The Common Starling is an introduced species, and the Tree Martin is a native competitor;  both of these species  may occupy the same nesting boxes intended for the Swift Parrot, which can impact the conservation efforts and success for Swift Parrots to breed.
 
-## (c) Difference in "Seasons"
+## (c) Difference in Seasons
 - The years of 2016 and 2019 are being compared, and observations were taken during the winter months to observe nesting patterns. In 2016, the boxes were newly installed, and by 2019, they had been in place for a few years. A second breeding season also occurred in 2019, resulting in a shift in nest box occupancy.
 
 ## (d) Table of Models
@@ -392,3 +393,13 @@ new_predictions # show results
 
 ## (k) Interpret Your Results
 - Considering the model predictions from our model in part j, there is a higher probability that a Swift Parrot will occupy a nest when it is closer to the forest edge. At 0m, there is a predicted probability of 0.48 in 2016 (95% CI: [0.33, 0.64]) and 0.30 in 2019 (95% CI: [0.18, 0.44]). When farther away from the forest edge at 900 m, the occupancy decreases to 0.12 in 2016 (95% CI: [0.06, 0.24]) and 0.06 in 2019 (95% CI: [0.03, 0.13]). This suggests a negative relationship between distance from the forest edge and nest box occupancy probability, and also suggests that Swift Parrots have a preference for being on the forest edge. It should also be considered that the competitive species of Common Starlings and Tree Martins tend to use older boxes or boxes farther away from the forest edge, which may influence which boxes the Swift Parrots decide to occupy. 
+
+# Problem 4, Affective and explanatory visualizations
+
+## (a) Comparing visualizations
+
+- My visualizations between assignments remained largely similar. They were focused on the same dataset I collected, and while traditional box-plots were created for homework assignment 3 to analyze trends, my creative visualization didn't vary much between assignments. In homework 3, I created my affective visualization in a bullet-journal style inspired by the Dear Data project. I used different shapes, lines, and colors to convey he data, and tried to analyze patterns using creative elements rather than numbers. Between drafts of the affective visualization, the basic format remained the same.  
+
+- Patterns I noticed in my data that could be seen in the dataset, boxplots, and the affective visualization are that 7 of my 16 running days were below average in caloric intake, with the remaining being above average. I also noticed that days with below average sleep often could be correlated with lower caloric intake. These patterns stayed consistent regardless of format, but were easy to visualize with the use of color and shape in the affective visualization. 
+
+- During week 9, I received positive feedback about my visualization. Most feedback emphasized that the visualization was easy to interpret and simple to understand. I received feedback that the key I created explaining the symbols and colors was cute, and I was able to take feedback from the previous week in section to edit that, making the font larger and adding an additional element to indicate days with above average mileage. Taking feedback allowed me to enhance the clarity and visual storytelling while keeping the overall design the same. Overall, my feedback was that the data was intuitive, vibrant, and enjoyable to look at. 
